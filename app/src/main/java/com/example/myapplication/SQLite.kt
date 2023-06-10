@@ -1,42 +1,26 @@
 package com.example.myapplication
 
 import android.os.Bundle
-import android.widget.Button
 import android.content.ContentValues
 import android.content.Context
+import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
 import android.provider.BaseColumns
-import android.widget.EditText
 import androidx.appcompat.app.AppCompatActivity
 
-class Login: AppCompatActivity() {
-    private lateinit var username: EditText
-    private lateinit var password: EditText
-    private lateinit var loginButton: Button
+class Dbase: AppCompatActivity() {
 
     private lateinit var dbHelper: DatabaseHelper
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.login)
+        //setContentView(R.layout.login)
 
         dbHelper = DatabaseHelper(this)
-
-        username = findViewById(R.id.usname)
-        password = findViewById(R.id.pswd)
-        loginButton = findViewById(R.id.loginbtn)
-
-        loginButton.setOnClickListener {
-            val username = username.text.toString()
-            val password = password.text.toString()
-
-            // Save username and password to the database
-            saveCredentials(username, password)
-        }
     }
 
-    private fun saveCredentials(username: String, password: String) {
+    fun saveCredentials(username: String, password: String) {
         val db = dbHelper.writableDatabase
 
         val values = ContentValues().apply {
@@ -46,6 +30,30 @@ class Login: AppCompatActivity() {
 
         db.insert(DatabaseContract.UserEntry.TABLE_NAME, null, values)
         db.close()
+    }
+    fun validateCredentials(username: String, password: String): Boolean {
+        val db = dbHelper.readableDatabase
+
+        val selection = "${DatabaseContract.UserEntry.COLUMN_USERNAME} = ? AND " +
+                "${DatabaseContract.UserEntry.COLUMN_PASSWORD} = ?"
+        val selectionArgs = arrayOf(username, password)
+
+        val cursor: Cursor = db.query(
+            DatabaseContract.UserEntry.TABLE_NAME,
+            null,
+            selection,
+            selectionArgs,
+            null,
+            null,
+            null
+        )
+
+        val isValid = cursor.count > 0
+
+        cursor.close()
+        db.close()
+
+        return isValid
     }
 
     class DatabaseHelper(context: Context) :
