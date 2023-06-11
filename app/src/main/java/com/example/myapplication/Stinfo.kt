@@ -1,11 +1,13 @@
 package com.example.myapplication
 
+import android.content.DialogInterface
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.content.Intent
 import android.text.Editable
 import android.widget.Button
 import android.widget.EditText
+import androidx.appcompat.app.AlertDialog
 
 class Stinfo : AppCompatActivity() {
 
@@ -37,7 +39,19 @@ class Stinfo : AppCompatActivity() {
         }
 
         logoutButton.setOnClickListener {
-            openMainActivity(MainActivity::class.java)
+            val builder = AlertDialog.Builder(this@Stinfo)
+            builder.setTitle("Exit Alert")
+            builder.setMessage("Do you want to logout")
+            builder.setCancelable(false)
+            builder.setPositiveButton("Yes") {
+                    dialog: DialogInterface, which: Int ->
+                openMainActivity(
+                    MainActivity::class.java
+                )
+            }
+            builder.setNegativeButton("No") {
+                    dialog:DialogInterface, which: Int -> dialog.cancel() }
+            builder.show()
         }
     }
     private fun openMainActivity(activityClass: Class<*>) {
