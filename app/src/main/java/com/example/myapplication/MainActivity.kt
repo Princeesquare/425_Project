@@ -69,7 +69,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun openMainActivity() {
-        val intent = Intent(this, St_info::class.java)
+        val intent = Intent(this, Stinfo::class.java)
         startActivity(intent)
         finish() // Close the login activity so that the user can't go back to it without logging out
     }
