@@ -1,12 +1,11 @@
 package com.example.myapplication
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
-import androidx.core.content.ContextCompat.startActivity
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.widget.doAfterTextChanged
 
 class MainActivity : AppCompatActivity() {
@@ -17,35 +16,37 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.login)
+        setContentView(R.layout.activity_main)
 
-        var data = Dbase()
+        val data = Dbase()
 
         username = findViewById(R.id.usname)
         password = findViewById(R.id.pswd)
         loginButton = findViewById(R.id.loginbtn)
         signupButton = findViewById(R.id.sign)
 
-        val uname = username.text.toString()
-        val pword = password.text.toString()
+
 
         signupButton.setOnClickListener {// SIGN UP BUTTON
+            val uname = username.text.toString()
+            val pwd = password.text.toString()
 
-            validateInputs(uname, pword)
+            validateInputs(uname, pwd)
 
             // Save username and password to the database
-            data.saveCredentials(uname, pword)
+            data.saveCredentials(uname, pwd)
             showToast( "Signed Up Successfully")
         }
 
         loginButton.setOnClickListener {// LOGIN BUTTON
+            val uname = username.text.toString()
+            val pwd = password.text.toString()
 
-            if (validateInputs(uname, pword)) {
-                if (data.validateCredentials(uname, pword)) {
-                    openMainActivity()
-                } else {
-                    showToast("Invalid username or password")
-                }
+            val inputsValid = validateInputs(uname, pwd)
+            if (inputsValid && data.validateCredentials(uname, pwd)) {
+                openMainActivity()
+            } else if (inputsValid) {
+                showToast("Invalid username or password")
             }
         }
 
@@ -68,7 +69,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun openMainActivity() {
-        val intent = Intent(this, MainActivity::class.java)
+        val intent = Intent(this, stinfo::class.java)
         startActivity(intent)
         finish() // Close the login activity so that the user can't go back to it without logging out
     }
@@ -78,10 +79,10 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun updateLoginButtonState() {
-        val username = username.text.toString()
-        val password = password.text.toString()
+        val uname = username.text.toString()
+        val pwd = password.text.toString()
 
-        loginButton.isEnabled = validateInputs(username, password,)
+        loginButton.isEnabled = validateInputs(uname, pwd)
     }
 
 }
