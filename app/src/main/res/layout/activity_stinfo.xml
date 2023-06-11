@@ -7,6 +7,19 @@
     android:background="@drawable/gradient"
     tools:context=".MainActivity">
 
+    <Button
+        android:id="@+id/viewBtn"
+        android:layout_width="238dp"
+        android:layout_height="48dp"
+        android:text="View Student"
+        app:cornerRadius="@null"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.557" />
+
     <TextView
         android:id="@+id/textView"
         android:layout_width="wrap_content"
@@ -23,53 +36,28 @@
         app:layout_constraintVertical_bias="0.036" />
 
     <Button
-        android:id="@+id/button"
+        android:id="@+id/logout"
         android:layout_width="238dp"
         android:layout_height="48dp"
-        android:shadowColor="#404040"
-        android:text="Add Depatrtment"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.502"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.775"
-        app:rippleColor="#FF9800" />
-
-    <Button
-        android:id="@+id/button2"
-        android:layout_width="238dp"
-        android:layout_height="48dp"
-        android:text="View Student"
+        android:text="LOG OUT"
         app:cornerRadius="@null"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.271" />
-
-    <Button
-        android:id="@+id/button3"
-        android:layout_width="238dp"
-        android:layout_height="48dp"
-        android:text="View department"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.603" />
+        app:layout_constraintVertical_bias="0.808" />
 
     <Button
-        android:id="@+id/button4"
+        android:id="@+id/addBtn"
         android:layout_width="238dp"
         android:layout_height="48dp"
         android:text="AddStudent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.502"
+        app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.448" />
+        app:layout_constraintVertical_bias="0.295" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
