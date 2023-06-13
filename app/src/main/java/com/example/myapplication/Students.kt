@@ -9,40 +9,47 @@ import android.widget.Toast
 
 class Students : AppCompatActivity() {
 
-    private lateinit var save: Button
-    private lateinit var back: Button
+    private lateinit var saveButton: Button
+    private lateinit var backButton: Button
 
     private lateinit var nameEditText: EditText
     private lateinit var surnameEditText: EditText
     private lateinit var ageEditText: EditText
     private lateinit var departmentEditText: EditText
+    private lateinit var studentNumberEditText: EditText
 
-    //@SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_students)
 
-        val data = Dbase()
+        val data = Dbase(this)
 
-        save = findViewById(R.id.saveBtn)
-        back = findViewById(R.id.backBtn)
+        saveButton = findViewById(R.id.saveBtn)
+        backButton = findViewById(R.id.backBtn)
         nameEditText = findViewById(R.id.fname)
         surnameEditText = findViewById(R.id.sname)
         ageEditText = findViewById(R.id.age)
         departmentEditText = findViewById(R.id.dpt)
+        studentNumberEditText = findViewById(R.id.stnum)
 
-        save.setOnClickListener {
+        saveButton.setOnClickListener {
+            val stNum = studentNumberEditText.text.toString()
             val name = nameEditText.text.toString()
             val surname = surnameEditText.text.toString()
-            val age = ageEditText.text.toString().toInt()
+            val age = ageEditText.text.toString().toIntOrNull()
             val department = departmentEditText.text.toString()
 
-            data.saveDetails(name, surname, age, department)
-            Toast.makeText(this, "Student Information Saved Successfully", Toast.LENGTH_LONG).show()
-            clearEditTextFields()
+            if (stNum.isNotEmpty() && name.isNotEmpty() && surname.isNotEmpty() && age != null && department.isNotEmpty()) {
+                data.saveDetails(stNum, name, surname, age, department)
+                Toast.makeText(this, "Student Information Saved Successfully", Toast.LENGTH_LONG).show()
+                clearEditTextFields()
+            } else {
+                Toast.makeText(this, "Please fill in all the fields", Toast.LENGTH_LONG).show()
+            }
         }
-        back.setOnClickListener{
-            openMainActivity(Stinfo::class.java)
+
+        backButton.setOnClickListener {
+            openActivity(Stinfo::class.java)
         }
     }
 
@@ -51,8 +58,10 @@ class Students : AppCompatActivity() {
         surnameEditText.text.clear()
         ageEditText.text.clear()
         departmentEditText.text.clear()
+        studentNumberEditText.text.clear()
     }
-    private fun openMainActivity(activityClass: Class<*>) {
+
+    private fun openActivity(activityClass: Class<*>) {
         val intent = Intent(this, activityClass)
         startActivity(intent)
         finish()

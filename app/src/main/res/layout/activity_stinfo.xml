@@ -8,6 +8,19 @@
     tools:context=".MainActivity">
 
     <Button
+        android:id="@+id/delButton"
+        android:layout_width="238dp"
+        android:layout_height="48dp"
+        android:text="Delete Student"
+        app:cornerRadius="@null"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.453" />
+
+    <Button
         android:id="@+id/viewBtn"
         android:layout_width="238dp"
         android:layout_height="48dp"
@@ -18,7 +31,7 @@
         app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.392" />
+        app:layout_constraintVertical_bias="0.326" />
 
     <TextView
         android:id="@+id/textView"
@@ -52,18 +65,19 @@
         android:id="@+id/addBtn"
         android:layout_width="238dp"
         android:layout_height="48dp"
-        android:text="AddStudent"
+        android:text="Add Student"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.226" />
+        app:layout_constraintVertical_bias="0.203" />
 
     <EditText
         android:id="@+id/viewDetails"
-        android:layout_width="393dp"
-        android:layout_height="217dp"
+        android:layout_width="360dp"
+        android:layout_height="216dp"
+        android:editable="false"
         android:ems="10"
         android:gravity="start|top"
         android:inputType="textMultiLine"
