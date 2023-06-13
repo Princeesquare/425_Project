@@ -27,8 +27,8 @@ class Stinfo : AppCompatActivity() {
         logoutButton = findViewById(R.id.logout)
         detailsTextView = findViewById(R.id.viewDetails)
         deleteButton = findViewById(R.id.delButton)
-        detailsTextView.isEnabled = false
-        detailsTextView.isCursorVisible = true
+        detailsTextView.keyListener = null
+
 
         addButton.setOnClickListener {
             openActivity(Students::class.java)
