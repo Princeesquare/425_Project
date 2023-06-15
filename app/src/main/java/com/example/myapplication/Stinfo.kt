@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.content.Intent
 import android.widget.Button
 import android.widget.EditText
+import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 
 class Stinfo : AppCompatActivity() {
@@ -14,7 +15,9 @@ class Stinfo : AppCompatActivity() {
     private lateinit var viewButton: Button
     private lateinit var logoutButton: Button
     private lateinit var deleteButton: Button
+    private lateinit var searchButton: Button
     private lateinit var detailsTextView: EditText
+    private lateinit var studentNumber: EditText
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -26,6 +29,8 @@ class Stinfo : AppCompatActivity() {
         viewButton = findViewById(R.id.viewBtn)
         logoutButton = findViewById(R.id.logout)
         detailsTextView = findViewById(R.id.viewDetails)
+        searchButton = findViewById(R.id.searchBtn)
+        studentNumber = findViewById(R.id.stnum2)
         deleteButton = findViewById(R.id.delButton)
         detailsTextView.keyListener = null
 
@@ -41,6 +46,27 @@ class Stinfo : AppCompatActivity() {
 
         deleteButton.setOnClickListener{
             openActivity(Delete::class.java)
+        }
+        searchButton.setOnClickListener {
+            val studentNum = studentNumber.text.toString()
+            if (studentNum.isNotEmpty()) {
+                val studentInfo = data.getStudentInfoByStudentNumber(studentNum)
+                if (studentInfo != null) {
+                    val intent = Intent(this, Search::class.java)
+                    intent.putExtra("studentNumber", studentInfo.studentNumber)
+                    intent.putExtra("firstName", studentInfo.firstName)
+                    intent.putExtra("surname", studentInfo.surname)
+                    intent.putExtra("age", studentInfo.age)
+                    intent.putExtra("department", studentInfo.department)
+                    startActivity(intent)
+                } else {
+                    Toast.makeText(this, "No student found with the provided student number", Toast.LENGTH_LONG).show()
+                }
+            } else {
+                Toast.makeText(this, "Please enter a student number", Toast.LENGTH_LONG).show()
+            }
+            val clear = intent.getStringExtra("Clear")
+            studentNumber.setText(clear)
         }
 
         logoutButton.setOnClickListener {

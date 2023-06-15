@@ -7,31 +7,48 @@
     android:background="@drawable/gradient"
     tools:context=".MainActivity">
 
-    <Button
-        android:id="@+id/delButton"
-        android:layout_width="238dp"
-        android:layout_height="48dp"
-        android:text="Delete Student"
-        app:cornerRadius="@null"
+    <EditText
+        android:id="@+id/stnum2"
+        android:layout_width="256dp"
+        android:layout_height="54dp"
+        android:ems="10"
+        android:inputType="number"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintHorizontal_bias="0.987"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.453" />
+        app:layout_constraintVertical_bias="0.494" />
 
     <Button
-        android:id="@+id/viewBtn"
-        android:layout_width="238dp"
-        android:layout_height="48dp"
-        android:text="View Student"
+        android:id="@+id/searchBtn"
+        android:layout_width="239dp"
+        android:layout_height="57dp"
+        android:text="Search Student"
+        android:textSize="18sp"
         app:cornerRadius="@null"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintHorizontal_bias="0.482"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.326" />
+        app:layout_constraintVertical_bias="0.605" />
+
+    <TextView
+        android:id="@+id/textView12"
+        android:layout_width="175dp"
+        android:layout_height="39dp"
+        android:text="Student No:"
+        android:textAlignment="viewStart"
+        android:textColor="#FAF7F7"
+        android:textSize="18sp"
+        android:textStyle="bold|italic"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.012"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.505" />
 
     <TextView
         android:id="@+id/textView"
@@ -49,44 +66,75 @@
         app:layout_constraintVertical_bias="0.036" />
 
     <Button
-        android:id="@+id/logout"
+        android:id="@+id/addBtn"
+        android:layout_width="240dp"
+        android:layout_height="55dp"
+        android:text="Add Student"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.15" />
+
+    <Button
+        android:id="@+id/viewBtn"
         android:layout_width="238dp"
         android:layout_height="48dp"
-        android:text="LOG OUT"
+        android:text="View Student"
+        android:textSize="18sp"
         app:cornerRadius="@null"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.571" />
+        app:layout_constraintVertical_bias="0.273" />
 
     <Button
-        android:id="@+id/addBtn"
+        android:id="@+id/delButton"
         android:layout_width="238dp"
         android:layout_height="48dp"
-        android:text="Add Student"
+        android:text="Delete Student"
+        android:textSize="18sp"
+        app:cornerRadius="@null"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.203" />
+        app:layout_constraintVertical_bias="0.401" />
+
+    <Button
+        android:id="@+id/logout"
+        android:layout_width="234dp"
+        android:layout_height="52dp"
+        android:text="LOG OUT"
+        android:textSize="18sp"
+        app:cornerRadius="@null"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.468"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.976" />
 
     <EditText
         android:id="@+id/viewDetails"
-        android:layout_width="360dp"
-        android:layout_height="216dp"
+        android:layout_width="376dp"
+        android:layout_height="173dp"
         android:editable="false"
         android:ems="10"
         android:gravity="start|top"
         android:inputType="textMultiLine"
         android:text="Student Details"
+        android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.592"
+        app:layout_constraintHorizontal_bias="0.388"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.952" />
+        app:layout_constraintVertical_bias="0.855" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

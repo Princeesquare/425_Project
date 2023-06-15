@@ -11,135 +11,167 @@ class Dbase(context: Context) {
 
     private val dbHelper: DatabaseHelper = DatabaseHelper(context)
 
-    fun createDatabase() {
-        dbHelper.writableDatabase
-    }
-
     private fun isDatabaseExists(): Boolean {
         val dbFile = dbHelper.context.getDatabasePath(DatabaseHelper.DATABASE_NAME)
         return dbFile.exists()
     }
 
     fun saveCredentials(username: String, password: String) {
-        val db = dbHelper.writableDatabase
-
-        val values = ContentValues().apply {
-            put(DatabaseContract.UserEntry.COLUMN_USERNAME, username)
-            put(DatabaseContract.UserEntry.COLUMN_PASSWORD, password)
+        dbHelper.writableDatabase.use { db ->
+            val values = ContentValues().apply {
+                put(DatabaseContract.UserEntry.COLUMN_USERNAME, username)
+                put(DatabaseContract.UserEntry.COLUMN_PASSWORD, password)
+            }
+            db.insert(DatabaseContract.UserEntry.TABLE_NAME, null, values)
         }
-
-        db.insert(DatabaseContract.UserEntry.TABLE_NAME, null, values)
-        db.close()
     }
 
     fun validateCredentials(username: String, password: String): Boolean {
         if (!isDatabaseExists()) {
             return false
         }
-        val db = dbHelper.readableDatabase
+        return dbHelper.readableDatabase.use { db ->
+            val selection =
+                "${DatabaseContract.UserEntry.COLUMN_USERNAME} = ? AND ${DatabaseContract.UserEntry.COLUMN_PASSWORD} = ?"
+            val selectionArgs = arrayOf(username, password)
+            val cursor: Cursor = db.query(
+                DatabaseContract.UserEntry.TABLE_NAME,
+                null,
+                selection,
+                selectionArgs,
+                null,
+                null,
+                null
+            )
+            cursor.count > 0
 
-        val selection =
-            "${DatabaseContract.UserEntry.COLUMN_USERNAME} = ? AND ${DatabaseContract.UserEntry.COLUMN_PASSWORD} = ?"
-        val selectionArgs = arrayOf(username, password)
+        }
 
-        val cursor: Cursor = db.query(
-            DatabaseContract.UserEntry.TABLE_NAME,
-            null,
-            selection,
-            selectionArgs,
-            null,
-            null,
-            null
-        )
-
-        val isValid = cursor.count > 0
-
-        cursor.close()
-        db.close()
-
-        return isValid
     }
 
     fun saveDetails(studentNumber: String, name: String, surname: String, age: Int, department: String) {
-        val db = dbHelper.writableDatabase
-
-        val values = ContentValues().apply {
-            put(DatabaseContract.DetailsEntry.COLUMN_STUDENT_NUMBER, studentNumber)
-            put(DatabaseContract.DetailsEntry.COLUMN_NAME, name)
-            put(DatabaseContract.DetailsEntry.COLUMN_SURNAME, surname)
-            put(DatabaseContract.DetailsEntry.COLUMN_AGE, age)
-            put(DatabaseContract.DetailsEntry.COLUMN_DEPARTMENT, department)
+        dbHelper.writableDatabase.use { db ->
+            val values = ContentValues().apply {
+                put(DatabaseContract.DetailsEntry.COLUMN_STUDENT_NUMBER, studentNumber)
+                put(DatabaseContract.DetailsEntry.COLUMN_NAME, name)
+                put(DatabaseContract.DetailsEntry.COLUMN_SURNAME, surname)
+                put(DatabaseContract.DetailsEntry.COLUMN_AGE, age)
+                put(DatabaseContract.DetailsEntry.COLUMN_DEPARTMENT, department)
+            }
+            db.insert(DatabaseContract.DetailsEntry.TABLE_NAME, null, values)
         }
-
-        db.insert(DatabaseContract.DetailsEntry.TABLE_NAME, null, values)
-        db.close()
     }
 
     fun getDetails(): String {
-        val db = dbHelper.readableDatabase
+        return dbHelper.readableDatabase.use { db ->
+            val projection = arrayOf(
+                DatabaseContract.DetailsEntry.COLUMN_STUDENT_NUMBER,
+                DatabaseContract.DetailsEntry.COLUMN_NAME,
+                DatabaseContract.DetailsEntry.COLUMN_SURNAME,
+                DatabaseContract.DetailsEntry.COLUMN_AGE,
+                DatabaseContract.DetailsEntry.COLUMN_DEPARTMENT
+            )
 
-        val projection = arrayOf(
-            DatabaseContract.DetailsEntry.COLUMN_STUDENT_NUMBER,
-            DatabaseContract.DetailsEntry.COLUMN_NAME,
-            DatabaseContract.DetailsEntry.COLUMN_SURNAME,
-            DatabaseContract.DetailsEntry.COLUMN_AGE,
-            DatabaseContract.DetailsEntry.COLUMN_DEPARTMENT
-        )
+            val stringBuilder = StringBuilder()
 
-        val stringBuilder = StringBuilder()
+            db.query(
+                DatabaseContract.DetailsEntry.TABLE_NAME,
+                projection,
+                null,
+                null,
+                null,
+                null,
+                null
+            ).use { cursor ->
+                while (cursor.moveToNext()) {
+                    val studentNumber =
+                        cursor.getString(cursor.getColumnIndexOrThrow(DatabaseContract.DetailsEntry.COLUMN_STUDENT_NUMBER))
+                    val name =
+                        cursor.getString(cursor.getColumnIndexOrThrow(DatabaseContract.DetailsEntry.COLUMN_NAME))
+                    val surname =
+                        cursor.getString(cursor.getColumnIndexOrThrow(DatabaseContract.DetailsEntry.COLUMN_SURNAME))
+                    val age =
+                        cursor.getInt(cursor.getColumnIndexOrThrow(DatabaseContract.DetailsEntry.COLUMN_AGE))
+                    val department =
+                        cursor.getString(cursor.getColumnIndexOrThrow(DatabaseContract.DetailsEntry.COLUMN_DEPARTMENT))
 
-        db.query(
-            DatabaseContract.DetailsEntry.TABLE_NAME,
-            projection,
-            null,
-            null,
-            null,
-            null,
-            null
-        ).use { cursor ->
-            while (cursor.moveToNext()) {
-                val studentNumber =
-                    cursor.getString(cursor.getColumnIndexOrThrow(DatabaseContract.DetailsEntry.COLUMN_STUDENT_NUMBER))
-                val name =
-                    cursor.getString(cursor.getColumnIndexOrThrow(DatabaseContract.DetailsEntry.COLUMN_NAME))
-                val surname =
-                    cursor.getString(cursor.getColumnIndexOrThrow(DatabaseContract.DetailsEntry.COLUMN_SURNAME))
-                val age =
-                    cursor.getInt(cursor.getColumnIndexOrThrow(DatabaseContract.DetailsEntry.COLUMN_AGE))
-                val department =
-                    cursor.getString(cursor.getColumnIndexOrThrow(DatabaseContract.DetailsEntry.COLUMN_DEPARTMENT))
-
-                stringBuilder.appendLine("Student Number: $studentNumber")
-                stringBuilder.appendLine("Name: $name")
-                stringBuilder.appendLine("Surname: $surname")
-                stringBuilder.appendLine("Age: $age")
-                stringBuilder.appendLine("Department: $department")
-                stringBuilder.appendLine()
+                    stringBuilder.appendLine("Student Number: $studentNumber")
+                    stringBuilder.appendLine("Name: $name")
+                    stringBuilder.appendLine("Surname: $surname")
+                    stringBuilder.appendLine("Age: $age")
+                    stringBuilder.appendLine("Department: $department")
+                    stringBuilder.appendLine()
+                }
             }
+
+            stringBuilder.toString()
         }
-
-        db.close()
-
-        return stringBuilder.toString()
     }
 
+    fun deleteStudent(studentNumber: String): Boolean {
+        return dbHelper.writableDatabase.use { db ->
+            val selection = "${DatabaseContract.DetailsEntry.COLUMN_STUDENT_NUMBER} = ?"
+            val selectionArgs = arrayOf(studentNumber)
 
-    fun deleteDetailsByStudentNumber(studentNumber: String): Boolean {
-        val db = dbHelper.writableDatabase
+            val deletedRows = db.delete(
+                DatabaseContract.DetailsEntry.TABLE_NAME,
+                selection,
+                selectionArgs
+            )
 
-        val selection = "${DatabaseContract.DetailsEntry.COLUMN_STUDENT_NUMBER} = ?"
-        val selectionArgs = arrayOf(studentNumber)
-
-        val deletedRows = db.delete(
-            DatabaseContract.DetailsEntry.TABLE_NAME,
-            selection,
-            selectionArgs
-        )
-
-        db.close()
-
-        return deletedRows > 0
+            deletedRows > 0
+        }
     }
+
+    fun getStudentInfoByStudentNumber(studentNumber: String): StudentInfo? {
+        return dbHelper.readableDatabase.use { db ->
+            val projection = arrayOf(
+                DatabaseContract.DetailsEntry.COLUMN_STUDENT_NUMBER,
+                DatabaseContract.DetailsEntry.COLUMN_NAME,
+                DatabaseContract.DetailsEntry.COLUMN_SURNAME,
+                DatabaseContract.DetailsEntry.COLUMN_AGE,
+                DatabaseContract.DetailsEntry.COLUMN_DEPARTMENT
+            )
+
+            val selection = "${DatabaseContract.DetailsEntry.COLUMN_STUDENT_NUMBER} = ?"
+            val selectionArgs = arrayOf(studentNumber)
+
+            var studentInfo: StudentInfo? = null
+
+            db.query(
+                DatabaseContract.DetailsEntry.TABLE_NAME,
+                projection,
+                selection,
+                selectionArgs,
+                null,
+                null,
+                null
+            ).use { cursor ->
+                if (cursor.moveToFirst()) {
+                    val name =
+                        cursor.getString(cursor.getColumnIndexOrThrow(DatabaseContract.DetailsEntry.COLUMN_NAME))
+                    val surname =
+                        cursor.getString(cursor.getColumnIndexOrThrow(DatabaseContract.DetailsEntry.COLUMN_SURNAME))
+                    val age =
+                        cursor.getInt(cursor.getColumnIndexOrThrow(DatabaseContract.DetailsEntry.COLUMN_AGE))
+                    val department =
+                        cursor.getString(cursor.getColumnIndexOrThrow(DatabaseContract.DetailsEntry.COLUMN_DEPARTMENT))
+
+                    studentInfo = StudentInfo(studentNumber, name, surname, age, department)
+                }
+            }
+
+            studentInfo
+        }
+    }
+
+    data class StudentInfo(
+        val studentNumber: String,
+        val firstName: String,
+        val surname: String,
+        val age: Int,
+        val department: String
+    )
 
     private class DatabaseHelper(context: Context) :
         SQLiteOpenHelper(context, DATABASE_NAME, null, DATABASE_VERSION) {

@@ -24,10 +24,10 @@ class Students : AppCompatActivity() {
 
         val data = Dbase(this)
 
-        saveButton = findViewById(R.id.saveBtn)
+        saveButton = findViewById(R.id.okBtn)
         backButton = findViewById(R.id.backBtn)
-        nameEditText = findViewById(R.id.fname)
-        surnameEditText = findViewById(R.id.sname)
+        nameEditText = findViewById(R.id.name)
+        surnameEditText = findViewById(R.id.surname)
         ageEditText = findViewById(R.id.age)
         departmentEditText = findViewById(R.id.dpt)
         studentNumberEditText = findViewById(R.id.stnum)
@@ -64,6 +64,5 @@ class Students : AppCompatActivity() {
     private fun openActivity(activityClass: Class<*>) {
         val intent = Intent(this, activityClass)
         startActivity(intent)
-        finish()
     }
 }

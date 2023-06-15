@@ -28,7 +28,7 @@ class Delete : AppCompatActivity() {
         deleteButton.setOnClickListener {
             val stNum = studentNumber.text.toString()
             if (stNum.isNotEmpty()) {
-                val deleted = data.deleteDetailsByStudentNumber(stNum)
+                val deleted = data.deleteStudent(stNum)
                 if (deleted) {
                     val builder = AlertDialog.Builder(this@Delete)
                     builder.setTitle("Exit Alert")
@@ -54,7 +54,6 @@ class Delete : AppCompatActivity() {
         cancelButton.setOnClickListener{
             val intent = Intent(this, Stinfo::class.java)
             startActivity(intent)
-            finish()
         }
     }
 }
